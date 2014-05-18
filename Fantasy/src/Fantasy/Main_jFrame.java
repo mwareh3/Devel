@@ -6,6 +6,9 @@
 
 package Fantasy;
 
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.ListSelectionModel;
+
 /**
  *
  * @author Mike
@@ -17,8 +20,27 @@ public class Main_jFrame extends javax.swing.JFrame {
      */
     public Main_jFrame() {
         initComponents();
+        this.Band_jTable.setSelectionModel(new ForcedListSelectionModel());
+        this.BandMember_jTable.setSelectionModel(new ForcedListSelectionModel());        
+        
     }
 
+    public class ForcedListSelectionModel extends DefaultListSelectionModel {
+
+        public ForcedListSelectionModel () {
+            setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
+
+        @Override
+        public void clearSelection() {
+        }
+
+        @Override
+        public void removeSelectionInterval(int index0, int index1) {
+        }
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,16 +54,20 @@ public class Main_jFrame extends javax.swing.JFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("jdbc:derby:Fantasy-DBPU").createEntityManager();
         bandQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT b FROM Band b");
         bandList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : bandQuery.getResultList();
+        bandMemberQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT b FROM BandMember b");
+        bandMemberList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : bandMemberQuery.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        BandTable_jScrollPane = new javax.swing.JScrollPane();
+        Band_jTable = new javax.swing.JTable();
+        BandMemberTable_jScrollPane = new javax.swing.JScrollPane();
+        BandMember_jTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable2.getTableHeader().setReorderingAllowed(false);
+        Band_jTable.getTableHeader().setReorderingAllowed(false);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, bandList, jTable2);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, bandList, Band_jTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${bandName}"));
         columnBinding.setColumnName("Band Name");
         columnBinding.setColumnClass(String.class);
@@ -56,19 +82,33 @@ public class Main_jFrame extends javax.swing.JFrame {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane2.setViewportView(jTable2);
+        BandTable_jScrollPane.setViewportView(Band_jTable);
+
+        BandMember_jTable.getTableHeader().setReorderingAllowed(false);
+
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.bandMemberCollection}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, Band_jTable, eLProperty, BandMember_jTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("fName"));
+        columnBinding.setColumnName("First Name");
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        BandMemberTable_jScrollPane.setViewportView(BandMember_jTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+            .addComponent(BandTable_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+            .addComponent(BandMemberTable_jScrollPane)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 357, Short.MAX_VALUE))
+                .addComponent(BandTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BandMemberTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 331, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
@@ -77,9 +117,7 @@ public class Main_jFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,13 +165,17 @@ public class Main_jFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane BandMemberTable_jScrollPane;
+    private javax.swing.JTable BandMember_jTable;
+    private javax.swing.JScrollPane BandTable_jScrollPane;
+    private javax.swing.JTable Band_jTable;
     private java.util.List<Fantasy.Band> bandList;
+    private java.util.List<Fantasy.BandMember> bandMemberList;
+    private javax.persistence.Query bandMemberQuery;
     private javax.persistence.Query bandQuery;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

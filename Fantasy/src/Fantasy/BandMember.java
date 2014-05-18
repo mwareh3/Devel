@@ -6,6 +6,8 @@
 
 package Fantasy;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,6 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BandMember.findByBandStartDate", query = "SELECT b FROM BandMember b WHERE b.bandStartDate = :bandStartDate"),
     @NamedQuery(name = "BandMember.findByEndDate", query = "SELECT b FROM BandMember b WHERE b.endDate = :endDate")})
 public class BandMember implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BandMemberPK bandMemberPK;
@@ -81,7 +86,9 @@ public class BandMember implements Serializable {
     }
 
     public void setMinit(String minit) {
+        String oldMinit = this.minit;
         this.minit = minit;
+        changeSupport.firePropertyChange("minit", oldMinit, minit);
     }
 
     public String getPositionInBand() {
@@ -89,7 +96,9 @@ public class BandMember implements Serializable {
     }
 
     public void setPositionInBand(String positionInBand) {
+        String oldPositionInBand = this.positionInBand;
         this.positionInBand = positionInBand;
+        changeSupport.firePropertyChange("positionInBand", oldPositionInBand, positionInBand);
     }
 
     public Date getBandStartDate() {
@@ -97,7 +106,9 @@ public class BandMember implements Serializable {
     }
 
     public void setBandStartDate(Date bandStartDate) {
+        Date oldBandStartDate = this.bandStartDate;
         this.bandStartDate = bandStartDate;
+        changeSupport.firePropertyChange("bandStartDate", oldBandStartDate, bandStartDate);
     }
 
     public Date getEndDate() {
@@ -105,7 +116,9 @@ public class BandMember implements Serializable {
     }
 
     public void setEndDate(Date endDate) {
+        Date oldEndDate = this.endDate;
         this.endDate = endDate;
+        changeSupport.firePropertyChange("endDate", oldEndDate, endDate);
     }
 
     public Band getBand() {
@@ -113,7 +126,9 @@ public class BandMember implements Serializable {
     }
 
     public void setBand(Band band) {
+        Band oldBand = this.band;
         this.band = band;
+        changeSupport.firePropertyChange("band", oldBand, band);
     }
 
     @Override
@@ -139,6 +154,14 @@ public class BandMember implements Serializable {
     @Override
     public String toString() {
         return "Fantasy.BandMember[ bandMemberPK=" + bandMemberPK + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
