@@ -51,7 +51,6 @@ public class Band implements Serializable {
     private Date startDate;
     @Column(name = "BAND_NAME")
     private String bandName;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "band")
     private Collection<Performance> performanceCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "band")

@@ -3,6 +3,27 @@
   <persistence-unit name="jdbc:derby:Fantasy-DBPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Fantasy.Band</class>
+    <class>Fantasy.Album</class>
+    <class>Fantasy.Attended</class>
+    <class>Fantasy.BandMember</class>
+    <class>Fantasy.Event</class>
+    <class>Fantasy.FantasyPerformance</class>
+    <class>Fantasy.FantasySetlist</class>
+    <class>Fantasy.FantasyUser</class>
+    <class>Fantasy.Followed</class>
+    <class>Fantasy.Performance</class>
+    <class>Fantasy.SetList</class>
+    <class>Fantasy.Song</class>
+    <class>Fantasy.Venue</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:Fantasy-DB"/>
+      <property name="javax.persistence.jdbc.user" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="FantasyPU-Test" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby:Fantasy-DB"/>
       <property name="javax.persistence.jdbc.user" value=""/>
