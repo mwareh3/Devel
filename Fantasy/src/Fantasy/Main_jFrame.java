@@ -20,15 +20,21 @@ public class Main_jFrame extends javax.swing.JFrame {
      */
     public Main_jFrame() {
         initComponents();
+        
+        // These lines set the jTable to only allow single row selection
         this.Band_jTable.setSelectionModel(new ForcedListSelectionModel());
         this.BandMember_jTable.setSelectionModel(new ForcedListSelectionModel());        
         this.Album_jTable.setSelectionModel(new ForcedListSelectionModel());
         this.Song_jTable.setSelectionModel(new ForcedListSelectionModel());
         this.Venue_jTable.setSelectionModel(new ForcedListSelectionModel());
+        this.FantasyUser_jTable.setSelectionModel(new ForcedListSelectionModel());
+        this.Followed_jTable.setSelectionModel(new ForcedListSelectionModel());
+        
+        // The lines select the first row on init
         this.Band_jTable.setRowSelectionInterval(0, 0);
         this.Album_jTable.setRowSelectionInterval(0, 0);
         this.Song_jTable.setRowSelectionInterval(0, 0);
-        
+        this.FantasyUser_jTable.setRowSelectionInterval(0,0);
     }
 
     public class ForcedListSelectionModel extends DefaultListSelectionModel {
@@ -64,8 +70,12 @@ public class Main_jFrame extends javax.swing.JFrame {
         bandMemberList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : bandMemberQuery.getResultList();
         venueQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT v FROM Venue v");
         venueList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : venueQuery.getResultList();
+        fantasyUserQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM FantasyUser f");
+        fantasyUserList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : fantasyUserQuery.getResultList();
+        followedQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT f FROM Followed f");
+        followedList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : followedQuery.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        BandInfo_jPanel = new javax.swing.JPanel();
         BandTable_jScrollPane = new javax.swing.JScrollPane();
         Band_jTable = new javax.swing.JTable();
         BandMemberTable_jScrollPane = new javax.swing.JScrollPane();
@@ -81,6 +91,13 @@ public class Main_jFrame extends javax.swing.JFrame {
         Venue_jLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Venue_jTable = new javax.swing.JTable();
+        FantasyUser_jPanel = new javax.swing.JPanel();
+        FantasyUser_jLabel = new javax.swing.JLabel();
+        FantasyUserTable_jScrollPane = new javax.swing.JScrollPane();
+        FantasyUser_jTable = new javax.swing.JTable();
+        FollowedTable_jScrollPane = new javax.swing.JScrollPane();
+        Followed_jTable = new javax.swing.JTable();
+        Followed_jLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -201,16 +218,16 @@ public class Main_jFrame extends javax.swing.JFrame {
         jTableBinding.bind();
         jScrollPane2.setViewportView(Venue_jTable);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout BandInfo_jPanelLayout = new javax.swing.GroupLayout(BandInfo_jPanel);
+        BandInfo_jPanel.setLayout(BandInfo_jPanelLayout);
+        BandInfo_jPanelLayout.setHorizontalGroup(
+            BandInfo_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(BandTable_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
             .addComponent(BandMemberTable_jScrollPane)
             .addComponent(AlbumTable_jScrollPane)
             .addComponent(jScrollPane1)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BandInfo_jPanelLayout.createSequentialGroup()
+                .addGroup(BandInfo_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(BandMember_jLabel)
                     .addComponent(Band_jLabel)
                     .addComponent(Album_jLabel)
@@ -219,9 +236,9 @@ public class Main_jFrame extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jScrollPane2)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        BandInfo_jPanelLayout.setVerticalGroup(
+            BandInfo_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BandInfo_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Band_jLabel)
                 .addGap(3, 3, 3)
@@ -242,10 +259,81 @@ public class Main_jFrame extends javax.swing.JFrame {
                 .addComponent(Venue_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Band Info", jPanel1);
+        jTabbedPane1.addTab("Band Info", BandInfo_jPanel);
+
+        FantasyUser_jLabel.setText("Fantasy User");
+
+        FantasyUser_jTable.getTableHeader().setReorderingAllowed(false);
+
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, fantasyUserList, FantasyUser_jTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${userName}"));
+        columnBinding.setColumnName("User Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fname}"));
+        columnBinding.setColumnName("Fisrt Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${minit}"));
+        columnBinding.setColumnName("M Init");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lname}"));
+        columnBinding.setColumnName("Last Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${birthDate}"));
+        columnBinding.setColumnName("Brith Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        FantasyUserTable_jScrollPane.setViewportView(FantasyUser_jTable);
+
+        Followed_jTable.getTableHeader().setReorderingAllowed(false);
+
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.followedCollection}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, FantasyUser_jTable, eLProperty, Followed_jTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${bandName}"));
+        columnBinding.setColumnName("Band Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        FollowedTable_jScrollPane.setViewportView(Followed_jTable);
+
+        Followed_jLabel.setText("Followed");
+
+        javax.swing.GroupLayout FantasyUser_jPanelLayout = new javax.swing.GroupLayout(FantasyUser_jPanel);
+        FantasyUser_jPanel.setLayout(FantasyUser_jPanelLayout);
+        FantasyUser_jPanelLayout.setHorizontalGroup(
+            FantasyUser_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(FantasyUserTable_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+            .addGroup(FantasyUser_jPanelLayout.createSequentialGroup()
+                .addGroup(FantasyUser_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(FantasyUser_jLabel)
+                    .addComponent(Followed_jLabel))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(FollowedTable_jScrollPane)
+        );
+        FantasyUser_jPanelLayout.setVerticalGroup(
+            FantasyUser_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FantasyUser_jPanelLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(FantasyUser_jLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(FantasyUserTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Followed_jLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(FollowedTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(410, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Fantasy User", FantasyUser_jPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -302,12 +390,20 @@ public class Main_jFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane AlbumTable_jScrollPane;
     private javax.swing.JLabel Album_jLabel;
     private javax.swing.JTable Album_jTable;
+    private javax.swing.JPanel BandInfo_jPanel;
     private javax.swing.JScrollPane BandMemberTable_jScrollPane;
     private javax.swing.JLabel BandMember_jLabel;
     private javax.swing.JTable BandMember_jTable;
     private javax.swing.JScrollPane BandTable_jScrollPane;
     private javax.swing.JLabel Band_jLabel;
     private javax.swing.JTable Band_jTable;
+    private javax.swing.JScrollPane FantasyUserTable_jScrollPane;
+    private javax.swing.JLabel FantasyUser_jLabel;
+    private javax.swing.JPanel FantasyUser_jPanel;
+    private javax.swing.JTable FantasyUser_jTable;
+    private javax.swing.JScrollPane FollowedTable_jScrollPane;
+    private javax.swing.JLabel Followed_jLabel;
+    private javax.swing.JTable Followed_jTable;
     private javax.swing.JLabel Song_jLabel;
     private javax.swing.JTable Song_jTable;
     private javax.swing.JLabel Venue_jLabel;
@@ -317,7 +413,10 @@ public class Main_jFrame extends javax.swing.JFrame {
     private javax.persistence.Query bandMemberQuery;
     private javax.persistence.Query bandQuery;
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JPanel jPanel1;
+    private java.util.List<Fantasy.FantasyUser> fantasyUserList;
+    private javax.persistence.Query fantasyUserQuery;
+    private java.util.List<Fantasy.Followed> followedList;
+    private javax.persistence.Query followedQuery;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;

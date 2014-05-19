@@ -6,10 +6,15 @@
 
 package Fantasy;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -17,6 +22,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,9 +37,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Followed.findByUserName", query = "SELECT f FROM Followed f WHERE f.followedPK.userName = :userName"),
     @NamedQuery(name = "Followed.findByBandName", query = "SELECT f FROM Followed f WHERE f.followedPK.bandName = :bandName")})
 public class Followed implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FollowedPK followedPK;
+    @Basic(optional = false)
+    @Column(name = "BAND_NAME")
+    private String bandName;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "followed")
     private FantasySetlist fantasySetlist;
     @JoinColumns({
@@ -50,12 +61,22 @@ public class Followed implements Serializable {
     public Followed() {
     }
 
+    public String getBandName() {
+        return bandName;
+    }
+
+    public void setBandName(String bandName) {
+        this.bandName = bandName;
+    }
+
     public Followed(FollowedPK followedPK) {
         this.followedPK = followedPK;
+        this.bandName = followedPK.getBandName();
     }
 
     public Followed(String userName, String bandName) {
         this.followedPK = new FollowedPK(userName, bandName);
+        this.bandName = bandName;
     }
 
     public FollowedPK getFollowedPK() {
@@ -64,6 +85,7 @@ public class Followed implements Serializable {
 
     public void setFollowedPK(FollowedPK followedPK) {
         this.followedPK = followedPK;
+        this.bandName = followedPK.getBandName();
     }
 
     public FantasySetlist getFantasySetlist() {
@@ -79,7 +101,9 @@ public class Followed implements Serializable {
     }
 
     public void setBand(Band band) {
+        Band oldBand = this.band;
         this.band = band;
+        changeSupport.firePropertyChange("band", oldBand, band);
     }
 
     public FantasyUser getFantasyUser() {
@@ -87,7 +111,9 @@ public class Followed implements Serializable {
     }
 
     public void setFantasyUser(FantasyUser fantasyUser) {
+        FantasyUser oldFantasyUser = this.fantasyUser;
         this.fantasyUser = fantasyUser;
+        changeSupport.firePropertyChange("fantasyUser", oldFantasyUser, fantasyUser);
     }
 
     public FantasyPerformance getFantasyPerformance() {
@@ -121,6 +147,14 @@ public class Followed implements Serializable {
     @Override
     public String toString() {
         return "Fantasy.Followed[ followedPK=" + followedPK + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

@@ -6,6 +6,8 @@
 
 package Fantasy;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -20,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FantasyUser.findByLname", query = "SELECT f FROM FantasyUser f WHERE f.lname = :lname"),
     @NamedQuery(name = "FantasyUser.findByBirthDate", query = "SELECT f FROM FantasyUser f WHERE f.birthDate = :birthDate")})
 public class FantasyUser implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -69,7 +74,9 @@ public class FantasyUser implements Serializable {
     }
 
     public void setUserName(String userName) {
+        String oldUserName = this.userName;
         this.userName = userName;
+        changeSupport.firePropertyChange("userName", oldUserName, userName);
     }
 
     public String getFname() {
@@ -77,7 +84,9 @@ public class FantasyUser implements Serializable {
     }
 
     public void setFname(String fname) {
+        String oldFname = this.fname;
         this.fname = fname;
+        changeSupport.firePropertyChange("fname", oldFname, fname);
     }
 
     public String getMinit() {
@@ -85,7 +94,9 @@ public class FantasyUser implements Serializable {
     }
 
     public void setMinit(String minit) {
+        String oldMinit = this.minit;
         this.minit = minit;
+        changeSupport.firePropertyChange("minit", oldMinit, minit);
     }
 
     public String getLname() {
@@ -93,7 +104,9 @@ public class FantasyUser implements Serializable {
     }
 
     public void setLname(String lname) {
+        String oldLname = this.lname;
         this.lname = lname;
+        changeSupport.firePropertyChange("lname", oldLname, lname);
     }
 
     public Date getBirthDate() {
@@ -101,7 +114,9 @@ public class FantasyUser implements Serializable {
     }
 
     public void setBirthDate(Date birthDate) {
+        Date oldBirthDate = this.birthDate;
         this.birthDate = birthDate;
+        changeSupport.firePropertyChange("birthDate", oldBirthDate, birthDate);
     }
 
     @XmlTransient
@@ -145,6 +160,14 @@ public class FantasyUser implements Serializable {
     @Override
     public String toString() {
         return "Fantasy.FantasyUser[ userName=" + userName + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
