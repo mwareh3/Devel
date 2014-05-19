@@ -22,7 +22,7 @@ public class Main_jFrame extends javax.swing.JFrame {
         initComponents();
         this.Band_jTable.setSelectionModel(new ForcedListSelectionModel());
         this.BandMember_jTable.setSelectionModel(new ForcedListSelectionModel());        
-        
+        this.Band_jTable.setRowSelectionInterval(0, 0);
     }
 
     public class ForcedListSelectionModel extends DefaultListSelectionModel {
@@ -62,6 +62,11 @@ public class Main_jFrame extends javax.swing.JFrame {
         Band_jTable = new javax.swing.JTable();
         BandMemberTable_jScrollPane = new javax.swing.JScrollPane();
         BandMember_jTable = new javax.swing.JTable();
+        BandMember_jLabel = new javax.swing.JLabel();
+        Band_jLabel = new javax.swing.JLabel();
+        Album_jLabel = new javax.swing.JLabel();
+        AlbumTable_jScrollPane = new javax.swing.JScrollPane();
+        Album_jTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,12 +93,56 @@ public class Main_jFrame extends javax.swing.JFrame {
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.bandMemberCollection}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, Band_jTable, eLProperty, BandMember_jTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("fName"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fName}"));
         columnBinding.setColumnName("First Name");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${minit}"));
+        columnBinding.setColumnName("Middle Initial");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lName}"));
+        columnBinding.setColumnName("Last Name");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${positionInBand}"));
+        columnBinding.setColumnName("Position In Band");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${bandStartDate}"));
+        columnBinding.setColumnName("Start Date with Band");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${endDate}"));
+        columnBinding.setColumnName("End Date");
+        columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         BandMemberTable_jScrollPane.setViewportView(BandMember_jTable);
+
+        BandMember_jLabel.setText("Band Members");
+
+        Band_jLabel.setText("Bands");
+
+        Album_jLabel.setText("Albums");
+
+        Album_jTable.getTableHeader().setReorderingAllowed(false);
+
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.albumCollection}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, Band_jTable, eLProperty, Album_jTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${albumName}"));
+        columnBinding.setColumnName("Album Name");
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${releaseYear}"));
+        columnBinding.setColumnName("Release Year");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${recordLabel}"));
+        columnBinding.setColumnName("Record Label");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        AlbumTable_jScrollPane.setViewportView(Album_jTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,17 +150,33 @@ public class Main_jFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(BandTable_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
             .addComponent(BandMemberTable_jScrollPane)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BandMember_jLabel)
+                    .addComponent(Band_jLabel)
+                    .addComponent(Album_jLabel))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(AlbumTable_jScrollPane)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Band_jLabel)
+                .addGap(3, 3, 3)
                 .addComponent(BandTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BandMember_jLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BandMemberTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Album_jLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AlbumTable_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 331, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jTabbedPane1.addTab("Band Info", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,9 +230,14 @@ public class Main_jFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane AlbumTable_jScrollPane;
+    private javax.swing.JLabel Album_jLabel;
+    private javax.swing.JTable Album_jTable;
     private javax.swing.JScrollPane BandMemberTable_jScrollPane;
+    private javax.swing.JLabel BandMember_jLabel;
     private javax.swing.JTable BandMember_jTable;
     private javax.swing.JScrollPane BandTable_jScrollPane;
+    private javax.swing.JLabel Band_jLabel;
     private javax.swing.JTable Band_jTable;
     private java.util.List<Fantasy.Band> bandList;
     private java.util.List<Fantasy.BandMember> bandMemberList;

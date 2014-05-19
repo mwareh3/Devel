@@ -46,8 +46,12 @@ public class BandMember implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BandMemberPK bandMemberPK;
+    @Column(name = "FNAME")
+    private String fName;
     @Column(name = "MINIT")
     private String minit;
+    @Column(name = "LNAME")
+    private String lName;
     @Column(name = "POSITION_IN_BAND")
     private String positionInBand;
     @Column(name = "BAND_START_DATE")
@@ -65,12 +69,34 @@ public class BandMember implements Serializable {
     public BandMember() {
     }
 
+    public String getfName() {
+        return fName;
+    }
+
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+
+    public String getlName() {
+        return lName;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
+    
+    
     public BandMember(BandMemberPK bandMemberPK) {
         this.bandMemberPK = bandMemberPK;
+        this.fName = bandMemberPK.getFname();
+        this.lName = bandMemberPK.getLname();
     }
 
     public BandMember(String bandName, String fname, String lname) {
         this.bandMemberPK = new BandMemberPK(bandName, fname, lname);
+        this.fName = fname;
+        this.lName = lname;
     }
 
     public BandMemberPK getBandMemberPK() {
@@ -79,6 +105,8 @@ public class BandMember implements Serializable {
 
     public void setBandMemberPK(BandMemberPK bandMemberPK) {
         this.bandMemberPK = bandMemberPK;
+        this.fName = bandMemberPK.getFname();
+        this.lName = bandMemberPK.getLname();
     }
 
     public String getMinit() {

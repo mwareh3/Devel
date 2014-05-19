@@ -42,6 +42,8 @@ public class Album implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AlbumPK albumPK;
+    @Column(name = "ALBUM_NAME")
+    private String albumName;
     @Column(name = "RELEASE_YEAR")
     @Temporal(TemporalType.DATE)
     private Date releaseYear;
@@ -58,12 +60,23 @@ public class Album implements Serializable {
     public Album() {
     }
 
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    
     public Album(AlbumPK albumPK) {
         this.albumPK = albumPK;
+        this.albumName = albumPK.getAlbumName();
     }
 
     public Album(String albumName, String bandName) {
         this.albumPK = new AlbumPK(albumName, bandName);
+        this.albumName = albumName;
     }
 
     public AlbumPK getAlbumPK() {
@@ -72,6 +85,7 @@ public class Album implements Serializable {
 
     public void setAlbumPK(AlbumPK albumPK) {
         this.albumPK = albumPK;
+        this.albumName = albumPK.getAlbumName();
     }
 
     public Date getReleaseYear() {
