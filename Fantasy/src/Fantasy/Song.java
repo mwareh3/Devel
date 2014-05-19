@@ -39,6 +39,8 @@ public class Song implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SongPK songPK;
+    @Column(name = "SONG_NAME")
+    private String songName;
     @Column(name = "TRACK_NUM")
     private Integer trackNum;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "song")
@@ -52,12 +54,23 @@ public class Song implements Serializable {
     public Song() {
     }
 
+    public String getSongName() {
+        return songName;
+    }
+
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+
+    
     public Song(SongPK songPK) {
         this.songPK = songPK;
+        this.songName = songPK.getSongName();
     }
 
     public Song(String bandName, String songName, String albumName) {
         this.songPK = new SongPK(bandName, songName, albumName);
+        this.songName = songName;
     }
 
     public SongPK getSongPK() {
@@ -66,6 +79,7 @@ public class Song implements Serializable {
 
     public void setSongPK(SongPK songPK) {
         this.songPK = songPK;
+        this.songName = songPK.getSongName();
     }
 
     public Integer getTrackNum() {

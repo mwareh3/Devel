@@ -94,15 +94,17 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="BandTable_jScrollPane" pref="631" max="32767" attributes="0"/>
                   <Component id="BandMemberTable_jScrollPane" alignment="0" max="32767" attributes="0"/>
+                  <Component id="AlbumTable_jScrollPane" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="BandMember_jLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="Band_jLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="Album_jLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="Song_jLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="AlbumTable_jScrollPane" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -120,6 +122,10 @@
                       <Component id="Album_jLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="AlbumTable_jScrollPane" min="-2" pref="100" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="Song_jLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="100" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="331" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -323,6 +329,55 @@
                       <Subbinding sourcePath="${recordLabel}">
                         <BindingParameter name="NAME" value="Record Label"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                    </BindingProperty>
+                  </BindingProperties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="Song_jLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Songs"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="jTable1">
+                  <Properties>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <BindingProperties>
+                    <BindingProperty name="elements" source="Album_jTable" sourcePath="${selectedElement.songCollection}" target="jTable1" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${songName}">
+                        <BindingParameter name="NAME" value="Song Name"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
+                      </Subbinding>
+                      <Subbinding sourcePath="${trackNum}">
+                        <BindingParameter name="NAME" value="Track Number"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                       </Subbinding>
                     </BindingProperty>
