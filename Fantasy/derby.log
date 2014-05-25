@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Mon May 19 13:00:01 EDT 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-0146-156c-f72b-0000024a5398 
+Mon May 19 15:43:01 EDT 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-0146-1602-3309-0000023c7e48 
 on database directory C:\Users\Mike\Documents\NetBeansProjects\Fantasy\Fantasy\Fantasy-DB with class loader sun.misc.Launcher$AppClassLoader@61bbe9ba 
 Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_05/db/lib/derby.jar
 java.vendor=Oracle Corporation

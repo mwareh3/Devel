@@ -32,9 +32,9 @@ public class Main_jFrame extends javax.swing.JFrame {
         
         // The lines select the first row on init
         this.Band_jTable.setRowSelectionInterval(0, 0);
-        this.Album_jTable.setRowSelectionInterval(0, 0);
-        this.Song_jTable.setRowSelectionInterval(0, 0);
-        this.FantasyUser_jTable.setRowSelectionInterval(0,0);
+        //this.Album_jTable.setRowSelectionInterval(0, 0);
+        //this.Song_jTable.setRowSelectionInterval(0, 0);
+        //this.FantasyUser_jTable.setRowSelectionInterval(0,0);
     }
 
     public class ForcedListSelectionModel extends DefaultListSelectionModel {
@@ -63,7 +63,7 @@ public class Main_jFrame extends javax.swing.JFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("jdbc:derby:Fantasy-DBPU").createEntityManager();
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("setlistdb?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
         bandQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT b FROM Band b");
         bandList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : bandQuery.getResultList();
         bandMemberQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT b FROM BandMember b");
