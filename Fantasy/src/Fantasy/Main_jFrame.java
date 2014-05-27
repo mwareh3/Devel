@@ -32,9 +32,9 @@ public class Main_jFrame extends javax.swing.JFrame {
         
         // The lines select the first row on init
         this.Band_jTable.setRowSelectionInterval(0, 0);
-        //this.Album_jTable.setRowSelectionInterval(0, 0);
+        this.Album_jTable.setRowSelectionInterval(0, 0);
         //this.Song_jTable.setRowSelectionInterval(0, 0);
-        //this.FantasyUser_jTable.setRowSelectionInterval(0,0);
+        this.FantasyUser_jTable.setRowSelectionInterval(0,0);
     }
 
     public class ForcedListSelectionModel extends DefaultListSelectionModel {
